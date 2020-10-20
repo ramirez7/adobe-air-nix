@@ -38,6 +38,8 @@ stdenv.mkDerivation {
 
   # From https://aur.archlinux.org/packages/ad/adobe-air-sdk/PKGBUILD
   installPhase = ''
+    echo "[DEBUG] NIX_CC=$NIX_CC"
+
     SDK_HOME="$out/opt/adobe-air-sdk/"
 
     find . ! -name AdobeAIRSDK.tbz2 ! -name AIR\ SDK\ license.pdf | sed -e 's/\.\///g' | while read file; do
@@ -60,7 +62,7 @@ stdenv.mkDerivation {
 
     # Helper for wrapping ld-loader sensitive binaries
     wrap_ld() {
-      dynlinker="$(cat $NIX_GCC/nix-support/dynamic-linker)"
+      dynlinker="$(cat $NIX_CC/nix-support/dynamic-linker)"
       binary="$1"
 
       wrapped="$(dirname "$binary")/.wrapped-$(basename "$binary")"
